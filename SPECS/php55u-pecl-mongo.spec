@@ -16,7 +16,7 @@
 
 Summary:      PHP MongoDB database driver
 Name:         %{php_base}-pecl-mongo
-Version:      1.4.5
+Version:      1.5.0
 Release:      1.ius%{?dist}
 License:      ASL 2.0
 Group:        Development/Languages
@@ -145,6 +145,9 @@ cd %{pecl_name}-%{version}
 
 
 %changelog
+* Fri Apr 04 2014 Ben Harper <ben.harper@rackspace.com> - 1.5.0-1.ius
+- Latest sources from upstream
+
 * Fri Jan 24 2014 Ben Harper <ben.harper@rackspace.com> - 1.4.5-1
 - porting from php54-pecl-mongo and updating to latest release
 
