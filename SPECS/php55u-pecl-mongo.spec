@@ -21,7 +21,8 @@ Release:      1.ius%{?dist}
 License:      ASL 2.0
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
-Source:       http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source0:      http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source1:      %{pecl_name}.ini
 BuildRequires: %{php_base}-devel
 BuildRequires: %{php_base}-pear
 Requires(post): %{__pecl}
@@ -43,7 +44,7 @@ This package provides an interface for communicating with the MongoDB database
 in PHP.
 
 
-%prep 
+%prep
 %setup -c -q
 cd %{pecl_name}-%{version}
 
@@ -60,52 +61,10 @@ cd %{pecl_name}-%{version}
 %{__make} install INSTALL_ROOT=%{buildroot}
 
 # Drop in the bit of configuration
-%{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
-%{__cat} > %{buildroot}%{_sysconfdir}/php.d/%{pecl_name}.ini << 'EOF'
-; Enable %{pecl_name} extension module
-extension=%{pecl_name}.so
-
-;  option documentation: http://www.php.net/manual/en/mongo.configuration.php
-
-;  If persistent connections are allowed.
-;mongo.allow_persistent = 1
-
-;  Whether to reconnect to the database if the connection is lost. 
-;mongo.auto_reconnect = 1
-
-;  The number of bytes-per-chunk. 
-;  This number must be at least 100 less than 4 megabytes (max: 4194204) 
-;mongo.chunk_size = 262144
-
-;  A character to be used in place of $ in modifiers and comparisons.
-;mongo.cmd = $
-
-;  Default hostname when nothing is passed to the constructor. 
-;mongo.default_host = localhost
-
-;  The default TCP port number. The database's default is 27017. 
-;mongo.default_port = 27017
-
-;  Return a BSON_LONG as an instance of MongoInt64  
-;  (instead of a primitive type). 
-;mongo.long_as_object = 0
-
-;  Use MongoDB native long (this will default to true for 1.1.0)
-mongo.native_long = true
-
-;  If an exception should be thrown for non-UTF8 strings. 
-;  This option will be eliminated and exceptions always thrown for non-UTF8 
-;  strings starting with version 1.1.0. 
-mongo.utf8 = 1
-EOF
+%{__install} -Dm0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/php.d/%{pecl_name}.ini
 
 # Install XML package description
-%{__mkdir_p} %{buildroot}%{pecl_xmldir}
-%{__install} -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
-
-%clean
-%{__rm} -rf %{buildroot}
+%{__install} -Dm0644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
 
 %post
@@ -133,7 +92,6 @@ cd %{pecl_name}-%{version}
 
 
 %files
-%defattr(-, root, root, -)
 %doc %{pecl_name}-%{version}/README.md
 %config(noreplace) %{_sysconfdir}/php.d/%{pecl_name}.ini
 %{php_extdir}/%{pecl_name}.so
