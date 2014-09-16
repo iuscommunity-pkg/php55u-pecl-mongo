@@ -26,7 +26,8 @@ Source:       http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: %{php_base}-devel, %{php_base}-pear
+BuildRequires: %{php_base}-devel
+BuildRequires: %{php_base}-pear
 
 Requires(post): %{__pecl}
 Requires(postun): %{__pecl}
