@@ -1,9 +1,5 @@
-%global php_apiver  %((echo 0; php -i 2>/dev/null | sed -n 's/^PHP API => //p') | tail -1)
-%{!?php_extdir: %{expand: %%global php_extdir %(php-config --extension-dir)}}
-
 %global pecl_name mongo
 %global real_name php-pecl-mongo
-%global basever 1
 %global php_base php55u
 
 # RPM 4.8
