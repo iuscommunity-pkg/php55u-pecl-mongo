@@ -1,4 +1,3 @@
-%{!?__pecl:     %{expand: %%global __pecl     %{_bindir}/pecl}}
 %global php_apiver  %((echo 0; php -i 2>/dev/null | sed -n 's/^PHP API => //p') | tail -1)
 %{!?php_extdir: %{expand: %%global php_extdir %(php-config --extension-dir)}}
 
@@ -25,8 +24,8 @@ Source0:      http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:      %{pecl_name}.ini
 BuildRequires: %{php_base}-devel
 BuildRequires: %{php_base}-pear
-Requires(post): %{__pecl}
-Requires(postun): %{__pecl}
+Requires(post): %{php_base}-pear
+Requires(postun): %{php_base}-pear
 
 %if 0%{?php_zend_api:1}
 Requires:     %{php_base}(zend-abi) = %{php_zend_api}
