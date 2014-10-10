@@ -24,18 +24,24 @@ Source0:      http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:      %{pecl_name}.ini
 BuildRequires: %{php_base}-devel
 BuildRequires: %{php_base}-pear
+BuildRequires: cyrus-sasl-devel
+
 Requires(post): %{php_base}-pear
 Requires(postun): %{php_base}-pear
 
-%if 0%{?php_zend_api:1}
 Requires:     %{php_base}(zend-abi) = %{php_zend_api}
 Requires:     %{php_base}(api) = %{php_core_api}
-%else
-Requires:     %{php_base}-api = %{php_apiver}
-%endif
-Provides:     %{real_name} = %{version}-%{release}
-Provides:     php-pecl(%{pecl_name}) = %{version}-%{release}
-Provides:     %{php_base}-pecl(%{pecl_name}) = %{version}-%{release}
+
+Provides:     php-%{pecl_name} = %{version}
+Provides:     php-%{pecl_name}%{?_isa} = %{version}
+Provides:     php-pecl(%{pecl_name}) = %{version}
+Provides:     php-pecl(%{pecl_name})%{?_isa} = %{version}
+Provides:     %{php_base}-%{pecl_name} = %{version}
+Provides:     %{php_base}-%{pecl_name}%{?_isa} = %{version}
+Provides:     %{php_base}-pecl(%{pecl_name}) = %{version}
+Provides:     %{php_base}-pecl(%{pecl_name})%{?_isa} = %{version}
+
+Provides:     %{real_name} = %{version}
 
 
 %description
