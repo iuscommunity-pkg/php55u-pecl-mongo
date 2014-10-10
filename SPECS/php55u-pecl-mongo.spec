@@ -1,6 +1,8 @@
 %global pecl_name mongo
 %global real_name php-pecl-mongo
 %global php_base php55u
+# After 40-json
+%global ini_name    50-%{pecl_name}.ini
 
 # RPM 4.8
 %{?filter_provides_in: %filter_provides_in %{php_extdir}/.*\.so$}
@@ -62,7 +64,7 @@ cd %{pecl_name}-%{version}
 %{__make} install INSTALL_ROOT=%{buildroot}
 
 # Drop in the bit of configuration
-%{__install} -Dm0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/php.d/%{pecl_name}.ini
+%{__install} -Dm0644 %{SOURCE1} %{buildroot}%{php_inidir}/%{ini_name}
 
 # Install XML package description
 %{__install} -Dm0644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
@@ -94,9 +96,9 @@ cd %{pecl_name}-%{version}
 
 %files
 %doc %{pecl_name}-%{version}/README.md
-%config(noreplace) %{_sysconfdir}/php.d/%{pecl_name}.ini
-%{php_extdir}/%{pecl_name}.so
 %{pecl_xmldir}/%{name}.xml
+%config(noreplace) %{php_inidir}/%{ini_name}
+%{php_extdir}/%{pecl_name}.so
 
 
 %changelog
