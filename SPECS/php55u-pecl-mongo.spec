@@ -40,6 +40,7 @@ Provides:     %{php_base}-pecl(%{pecl_name}) = %{version}
 Provides:     %{php_base}-pecl(%{pecl_name})%{?_isa} = %{version}
 
 Provides:     %{real_name} = %{version}
+Conflicts:    %{real_name} < %{version}
 
 
 %description
