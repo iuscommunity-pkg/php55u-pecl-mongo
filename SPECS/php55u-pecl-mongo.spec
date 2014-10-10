@@ -14,7 +14,7 @@
 Summary:      PHP MongoDB database driver
 Name:         %{php_base}-pecl-mongo
 Version:      1.5.7
-Release:      1.ius%{?dist}
+Release:      2.ius%{?dist}
 License:      ASL 2.0
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
@@ -120,6 +120,15 @@ fi
 
 
 %changelog
+* Fri Oct 10 2014 Carl George <carl.george@rackspace.com> - 1.5.7-2.ius
+- Add numerical prefix to extension configuration file
+- Enable SASL support
+- Install doc in pecl doc_dir
+- Build ZTS extension
+- Conflict with stock package
+- Use same provides as stock package
+- Directly require the correct pear package, not /usr/bin/pecl
+
 * Tue Sep 16 2014 Carl George <carl.george@rackspace.com> - 1.5.7-1.ius
 - Latest sources from upstream
 - Move config from a here doc to separate source file
