@@ -89,17 +89,13 @@ done
 
 
 %post
-%if 0%{?pecl_install:1}
 %{pecl_install} %{pecl_xmldir}/%{name}.xml >/dev/null || :
-%endif
 
 
 %postun
-%if 0%{?pecl_uninstall:1}
 if [ "$1" -eq "0" ]; then
-%{pecl_uninstall} %{pecl_name} >/dev/null || :
+   %{pecl_uninstall} %{pecl_name} >/dev/null || :
 fi
-%endif
 
 
 %check
