@@ -50,25 +50,42 @@ in PHP.
 
 %prep
 %setup -c -q
-cd %{pecl_name}-%{version}
+mv %{pecl_name}-%{version} NTS
+cp -pr NTS ZTS
 
 
 %build
-cd %{pecl_name}-%{version}
-phpize
-%configure 
+cd NTS
+%{_bindir}/phpize
+%configure  \
+  --with-mongo-sasl \
+  --with-php-config=%{_bindir}/php-config
+%{__make} %{?_smp_mflags}
+
+cd ../ZTS
+%{_bindir}/zts-phpize
+%configure  \
+  --with-mongo-sasl \
+  --with-php-config=%{_bindir}/zts-php-config
 %{__make} %{?_smp_mflags}
 
 
 %install
-cd %{pecl_name}-%{version}
-%{__make} install INSTALL_ROOT=%{buildroot}
+%{__make} -C NTS install INSTALL_ROOT=%{buildroot}
 
 # Drop in the bit of configuration
 %{__install} -Dm0644 %{SOURCE1} %{buildroot}%{php_inidir}/%{ini_name}
 
 # Install XML package description
-%{__install} -Dm0644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+%{__install} -Dm0644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+make -C ZTS install INSTALL_ROOT=%{buildroot}
+%{__install} -Dm0644 %{SOURCE1} %{buildroot}%{php_ztsinidir}/%{ini_name}
+
+# Documentation
+for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
+do %{__install} -Dpm0644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+done
 
 
 %post
@@ -86,20 +103,24 @@ fi
 
 
 %check
-cd %{pecl_name}-%{version}
-# only check if build extension can be loaded
+: Minimal load test for NTS extension
+%{__php} -n \
+    -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
+    -i | grep "MongoDB Support => enabled"
 
-%{_bindir}/php \
-    -n -d extension_dir=modules \
-    -d extension=%{pecl_name}.so \
+: Minimal load test for ZTS extension
+%{__ztsphp} -n \
+    -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
     -i | grep "MongoDB Support => enabled"
 
 
 %files
-%doc %{pecl_name}-%{version}/README.md
+%doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
+%config(noreplace) %{php_ztsinidir}/%{ini_name}
+%{php_ztsextdir}/%{pecl_name}.so
 
 
 %changelog
