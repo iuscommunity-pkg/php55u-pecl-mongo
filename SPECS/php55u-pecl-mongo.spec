@@ -13,8 +13,8 @@
 
 Summary:      PHP MongoDB database driver
 Name:         %{php_base}-pecl-mongo
-Version:      1.5.7
-Release:      2.ius%{?dist}
+Version:      1.5.8
+Release:      1.ius%{?dist}
 License:      ASL 2.0
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
@@ -120,6 +120,9 @@ fi
 
 
 %changelog
+* Tue Nov 11 2014 Ben Harper <ben.harper@rackspace.com> - 1.5.8-1.ius
+- Latest sources from upstream
+
 * Fri Oct 10 2014 Carl George <carl.george@rackspace.com> - 1.5.7-2.ius
 - Add numerical prefix to extension configuration file
 - Enable SASL support
